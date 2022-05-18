@@ -24,7 +24,6 @@ public class HeightBarMockup {
 
     private JPanel mHeightBar;
     private JLabel mHeightLabel;
-    private JPanel mColourBar;
 
     public void resizeHeightBar() {
         AirshowOperationsConfig airshowOperationsConfig = new AirshowOperationsConfig();
@@ -41,27 +40,23 @@ public class HeightBarMockup {
         double realPanelHeight = mHeightBar.getHeight();
         double featToRealHeight = realPanelHeight / maxHeightTop;
 
-        // Set the colour fills
+        // Set the colour fill dimensions
         int maxRedPanelHeight = (int) ((maxHeightTop - minHeightTop) * featToRealHeight);
-        this.mDimMaxRedSplash = new Dimension(mHeightBar.getWidth()-EDGE_BUFFER, maxRedPanelHeight);
+        this.mDimMaxRedSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, maxRedPanelHeight);
 
         int maxYellowPanelHeight = (int) ((minHeightTop - maxAerobatics) * featToRealHeight);
-        this.mDimMaxYellowSplash = new Dimension(mHeightBar.getWidth()-EDGE_BUFFER, maxYellowPanelHeight);
-
+        this.mDimMaxYellowSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, maxYellowPanelHeight);
 
         int middleGreenHeight = (int) ((maxAerobatics - minAerobatics) * featToRealHeight);
-        this.mDimMiddleGreenSplash = new Dimension(mHeightBar.getWidth()-EDGE_BUFFER, middleGreenHeight);
-//        middleGreenPanel.setPreferredSize(new Dimension(-1, middleGreenHeight));
-//
-//        int minYellowPanelHeight = (int) ((minAerobatics - maxHeightBottom) * featToRealHeight);
-//        minYellowPanel.setPreferredSize(new Dimension(-1, minYellowPanelHeight));
-//
-//        int minRedPanelHeight = (int) ((maxHeightBottom - minHeightBottom) * featToRealHeight);
-//        minRedPanel.setPreferredSize(new Dimension(-1, minRedPanelHeight));
+        this.mDimMiddleGreenSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, middleGreenHeight);
+
+        int minYellowPanelHeight = (int) ((minAerobatics - maxHeightBottom) * featToRealHeight);
+        this.mDimMinYellowSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, minYellowPanelHeight);
+
+        int minRedPanelHeight = (int) ((maxHeightBottom - minHeightBottom) * featToRealHeight);
+        this.mDimMinRedSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, minRedPanelHeight);
 
         recolourHeightBar();
-        //mHeightBar.repaint();
-
     }
 
     private void recolourHeightBar() {
@@ -75,25 +70,30 @@ public class HeightBarMockup {
 
         ColorUIResource maxAerobaticsAirfieldHeightColour = ColourPallete.maxAerobaticsAirfieldHeight;
         maxYellowColour = new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
-        minYellowColour= new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
+        minYellowColour = new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
 
         ColorUIResource minAerobaticsAirfieldHeightColour = ColourPallete.minAerobaticsAirfieldHeight;
         middleGreenColour = new Color(minAerobaticsAirfieldHeightColour.getRed(), minAerobaticsAirfieldHeightColour.getGreen(), minAerobaticsAirfieldHeightColour.getBlue());
 
         g.setColor(maxRedColour);
-        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMaxRedSplash.width-EDGE_BUFFER, this.mDimMaxRedSplash.height);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMaxRedSplash.width - EDGE_BUFFER, this.mDimMaxRedSplash.height);
         verticalPosn += this.mDimMaxRedSplash.height;
 
         g.setColor(maxYellowColour);
-        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMaxYellowSplash.width-EDGE_BUFFER, this.mDimMaxYellowSplash.height);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMaxYellowSplash.width - EDGE_BUFFER, this.mDimMaxYellowSplash.height);
         verticalPosn += this.mDimMaxYellowSplash.height;
 
         g.setColor(middleGreenColour);
-        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMiddleGreenSplash.width-EDGE_BUFFER, this.mDimMiddleGreenSplash.height);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMiddleGreenSplash.width - EDGE_BUFFER, this.mDimMiddleGreenSplash.height);
         verticalPosn += this.mDimMiddleGreenSplash.height;
 
-    }
+        g.setColor(minYellowColour);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMinYellowSplash.width - EDGE_BUFFER, this.mDimMinYellowSplash.height);
+        verticalPosn += this.mDimMinYellowSplash.height;
 
+        g.setColor(minRedColour);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMinRedSplash.width - EDGE_BUFFER, this.mDimMinRedSplash.height);
+    }
 
 
     public JPanel getHeightBar() {
