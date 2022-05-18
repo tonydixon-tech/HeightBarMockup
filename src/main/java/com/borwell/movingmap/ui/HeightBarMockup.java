@@ -1,12 +1,15 @@
 package com.borwell.movingmap.ui;
 
 import com.borwell.movingmap.domainobjects.config.AirshowOperationsConfig;
+import com.borwell.movingmap.ui.lookandfeel.ColourPallete;
 
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 
 public class HeightBarMockup {
 
+    private static final int EDGE_BUFFER = 10;
     private Color maxRedColour;
     private Color maxYellowColour;
     private Color middleGreenColour;
@@ -15,7 +18,7 @@ public class HeightBarMockup {
 
     private Dimension mDimMaxRedSplash;
     private Dimension mDimMaxYellowSplash;
-    private Dimension mDimMiddleSplash;
+    private Dimension mDimMiddleGreenSplash;
     private Dimension mDimMinYellowSplash;
     private Dimension mDimMinRedSplash;
 
@@ -35,35 +38,65 @@ public class HeightBarMockup {
         double maxHeightBottom = airshowOperationsConfig.getAirfieldMinHeight();
         double minHeightBottom = 0;
 
-        double realPanelHeight = mColourBar.getHeight();
+        double realPanelHeight = mHeightBar.getHeight();
         double featToRealHeight = realPanelHeight / maxHeightTop;
 
+        // Set the colour fills
         int maxRedPanelHeight = (int) ((maxHeightTop - minHeightTop) * featToRealHeight);
-        maxRedPanel.setPreferredSize(new Dimension(-1, maxRedPanelHeight));
+        this.mDimMaxRedSplash = new Dimension(mHeightBar.getWidth()-EDGE_BUFFER, maxRedPanelHeight);
 
         int maxYellowPanelHeight = (int) ((minHeightTop - maxAerobatics) * featToRealHeight);
-        maxYellowPanel.setPreferredSize(new Dimension(-1, maxYellowPanelHeight));
+        this.mDimMaxYellowSplash = new Dimension(mHeightBar.getWidth()-EDGE_BUFFER, maxYellowPanelHeight);
+
 
         int middleGreenHeight = (int) ((maxAerobatics - minAerobatics) * featToRealHeight);
-        middleGreenPanel.setPreferredSize(new Dimension(-1, middleGreenHeight));
-
-        int minYellowPanelHeight = (int) ((minAerobatics - maxHeightBottom) * featToRealHeight);
-        minYellowPanel.setPreferredSize(new Dimension(-1, minYellowPanelHeight));
-
-        int minRedPanelHeight = (int) ((maxHeightBottom - minHeightBottom) * featToRealHeight);
-        minRedPanel.setPreferredSize(new Dimension(-1, minRedPanelHeight));
+        this.mDimMiddleGreenSplash = new Dimension(mHeightBar.getWidth()-EDGE_BUFFER, middleGreenHeight);
+//        middleGreenPanel.setPreferredSize(new Dimension(-1, middleGreenHeight));
+//
+//        int minYellowPanelHeight = (int) ((minAerobatics - maxHeightBottom) * featToRealHeight);
+//        minYellowPanel.setPreferredSize(new Dimension(-1, minYellowPanelHeight));
+//
+//        int minRedPanelHeight = (int) ((maxHeightBottom - minHeightBottom) * featToRealHeight);
+//        minRedPanel.setPreferredSize(new Dimension(-1, minRedPanelHeight));
 
         recolourHeightBar();
-        minRedPanel.revalidate();
-
-        //mPanelHeight.setBackground(new Color(0,0,0, 0));
+        //mHeightBar.repaint();
 
     }
 
     private void recolourHeightBar() {
+        Graphics2D g = (Graphics2D) mHeightBar.getGraphics();
+
+        int verticalPosn = mHeightLabel.getHeight();
+
+        ColorUIResource maxAirfieldHeightColour = ColourPallete.maxAirfieldHeight;
+        maxRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
+        minRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
+
+        ColorUIResource maxAerobaticsAirfieldHeightColour = ColourPallete.maxAerobaticsAirfieldHeight;
+        maxYellowColour = new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
+        minYellowColour= new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
+
+        ColorUIResource minAerobaticsAirfieldHeightColour = ColourPallete.minAerobaticsAirfieldHeight;
+        middleGreenColour = new Color(minAerobaticsAirfieldHeightColour.getRed(), minAerobaticsAirfieldHeightColour.getGreen(), minAerobaticsAirfieldHeightColour.getBlue());
+
+        g.setColor(maxRedColour);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMaxRedSplash.width-EDGE_BUFFER, this.mDimMaxRedSplash.height);
+        verticalPosn += this.mDimMaxRedSplash.height;
+
+        g.setColor(maxYellowColour);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMaxYellowSplash.width-EDGE_BUFFER, this.mDimMaxYellowSplash.height);
+        verticalPosn += this.mDimMaxYellowSplash.height;
+
+        g.setColor(middleGreenColour);
+        g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMiddleGreenSplash.width-EDGE_BUFFER, this.mDimMiddleGreenSplash.height);
+        verticalPosn += this.mDimMiddleGreenSplash.height;
+
     }
 
-    public JPanel getmHeightBar() {
+
+
+    public JPanel getHeightBar() {
         return mHeightBar;
     }
 }
