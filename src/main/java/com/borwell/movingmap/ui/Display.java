@@ -1,5 +1,7 @@
 package com.borwell.movingmap.ui;
 
+import com.borwell.movingmap.ui.mapwindows.overlays.HeightBarMockup;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -15,6 +17,7 @@ public class Display extends JFrame{
         setSize(150, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
     }
 
 
@@ -23,10 +26,6 @@ public class Display extends JFrame{
     public void paint(Graphics g)
     {
         super.paint(g);
-        drawRectangles(g);
-    }
-
-    private void drawRectangles(Graphics g) {
         mHeightBar.resizeHeightBar();
     }
 

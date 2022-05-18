@@ -1,4 +1,4 @@
-package com.borwell.movingmap.ui;
+package com.borwell.movingmap.ui.mapwindows.overlays;
 
 import com.borwell.movingmap.domainobjects.config.AirshowOperationsConfig;
 import com.borwell.movingmap.ui.lookandfeel.ColourPallete;
@@ -37,7 +37,7 @@ public class HeightBarMockup {
         double maxHeightBottom = airshowOperationsConfig.getAirfieldMinHeight();
         double minHeightBottom = 0;
 
-        double realPanelHeight = mHeightBar.getHeight();
+        double realPanelHeight = mHeightBar.getHeight() - mHeightLabel.getHeight();
         double featToRealHeight = realPanelHeight / maxHeightTop;
 
         // Set the colour fill dimensions
@@ -62,7 +62,7 @@ public class HeightBarMockup {
     private void recolourHeightBar() {
         Graphics2D g = (Graphics2D) mHeightBar.getGraphics();
 
-        int verticalPosn = mHeightLabel.getHeight();
+        int verticalPosn = mHeightLabel.getHeight() + 1;
 
         ColorUIResource maxAirfieldHeightColour = ColourPallete.maxAirfieldHeight;
         maxRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
