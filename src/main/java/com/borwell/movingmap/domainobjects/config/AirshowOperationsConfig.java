@@ -6,7 +6,7 @@ public class AirshowOperationsConfig {
 
     private Double mAirfieldMaxHeight = 8000.0;
 
-    private Double mAirfieldMaxAerobaticsHeight = 2500.0;
+    private Double mAirfieldMaxAerobaticsHeight = 5000.0;
 
     private Double mAirfieldMinAerobaticsHeight = 1500.0;
 
