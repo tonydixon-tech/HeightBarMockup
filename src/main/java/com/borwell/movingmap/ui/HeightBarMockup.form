@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.borwell.movingmap.ui.HeightBarMockup">
+  <grid id="27dc6" binding="mHeightBar" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="200" height="700"/>
+    </constraints>
+    <properties>
+      <background color="-16777216"/>
+      <doubleBuffered value="false"/>
+      <enabled value="true"/>
+      <maximumSize width="200" height="1000"/>
+      <minimumSize width="200" height="700"/>
+      <opaque value="true"/>
+    </properties>
+    <border type="line"/>
+    <children>
+      <grid id="67942" binding="mColourBar" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children/>
+      </grid>
+      <component id="14b91" class="javax.swing.JLabel" binding="mHeightLabel">
+        <constraints border-constraint="North"/>
+        <properties>
+          <background color="-16777216"/>
+          <font name="Consolas" size="20" style="1"/>
+          <foreground color="-525057"/>
+          <horizontalAlignment value="0"/>
+          <maximumSize width="140" height="25"/>
+          <minimumSize width="140" height="25"/>
+          <opaque value="true"/>
+          <preferredSize width="140" height="25"/>
+          <requestFocusEnabled value="false"/>
+          <text value="0 ft"/>
+          <verticalTextPosition value="3"/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
