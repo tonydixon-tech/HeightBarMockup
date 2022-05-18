@@ -3,13 +3,17 @@ package com.borwell.movingmap.ui.mapwindows.overlays;
 import com.borwell.movingmap.domainobjects.config.AirshowOperationsConfig;
 import com.borwell.movingmap.ui.lookandfeel.ColourPallete;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.IOException;
 
 public class HeightBarMockup {
 
-    private static final int EDGE_BUFFER = 10;
+    private static final int EDGE_BUFFER = 1;
     private Color maxRedColour;
     private Color maxYellowColour;
     private Color middleGreenColour;
@@ -24,6 +28,17 @@ public class HeightBarMockup {
 
     private JPanel mHeightBar;
     private JLabel mHeightLabel;
+    private JPanel mPanelOverlay;
+
+    private BufferedImage mIndicator;
+
+    public HeightBarMockup() {
+        try {
+            mIndicator = ImageIO.read(this.getClass().getResource("/images/icons/heightbar.png"));
+        } catch(IOException ex){
+            ex.printStackTrace();;
+        }
+    }
 
     public void resizeHeightBar() {
         AirshowOperationsConfig airshowOperationsConfig = new AirshowOperationsConfig();
@@ -61,6 +76,7 @@ public class HeightBarMockup {
 
     private void recolourHeightBar() {
         Graphics2D g = (Graphics2D) mHeightBar.getGraphics();
+        Graphics2D gg = (Graphics2D) mPanelOverlay.getGraphics();
 
         int verticalPosn = mHeightLabel.getHeight() + 1;
 
@@ -93,10 +109,19 @@ public class HeightBarMockup {
 
         g.setColor(minRedColour);
         g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMinRedSplash.width - EDGE_BUFFER, this.mDimMinRedSplash.height);
+
+        gg.drawImage(mIndicator, 10, 150, null);
     }
 
 
     public JPanel getHeightBar() {
         return mHeightBar;
+    }
+
+    private void createUIComponents() {
+//        mPanelOverlay.setLayout(null);
+//        mLabelIndicator = new JLabel();
+//        mLabelIndicator.setIcon(new ImageIcon(getClass().getResource("/images/icons/heightbar.png")));
+//        mPanelOverlay.add(mLabelIndicator);
     }
 }
