@@ -8,12 +8,12 @@ import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.IOException;
 
-public class HeightBarMockup {
+public class HeightBarOverlay {
 
     private static final int EDGE_BUFFER = 1;
+    private static final int MAX_HEIGHT = 1000;
     private Color maxRedColour;
     private Color maxYellowColour;
     private Color middleGreenColour;
@@ -25,18 +25,16 @@ public class HeightBarMockup {
     private Dimension mDimMiddleGreenSplash;
     private Dimension mDimMinYellowSplash;
     private Dimension mDimMinRedSplash;
-
     private JPanel mHeightBar;
-    private JLabel mHeightLabel;
     private JPanel mPanelOverlay;
-
     private BufferedImage mIndicator;
+    private double mFeetToRealHeight = 0.0;
 
-    public HeightBarMockup() {
+    public HeightBarOverlay() {
         try {
             mIndicator = ImageIO.read(this.getClass().getResource("/images/icons/heightbar.png"));
-        } catch(IOException ex){
-            ex.printStackTrace();;
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -44,7 +42,7 @@ public class HeightBarMockup {
         AirshowOperationsConfig airshowOperationsConfig = new AirshowOperationsConfig();
 
         double minHeightTop = airshowOperationsConfig.getAirfieldMaxHeight();
-        double maxHeightTop = minHeightTop + 1000;
+        double maxHeightTop = minHeightTop + MAX_HEIGHT;
 
         double maxAerobatics = airshowOperationsConfig.getAirfieldMaxAerobaticsHeight();
         double minAerobatics = airshowOperationsConfig.getAirfieldMinAerobaticsHeight();
@@ -52,23 +50,23 @@ public class HeightBarMockup {
         double maxHeightBottom = airshowOperationsConfig.getAirfieldMinHeight();
         double minHeightBottom = 0;
 
-        double realPanelHeight = mHeightBar.getHeight() - mHeightLabel.getHeight();
-        double featToRealHeight = realPanelHeight / maxHeightTop;
+        double realPanelHeight = mHeightBar.getHeight();
+        mFeetToRealHeight = realPanelHeight / maxHeightTop;
 
         // Set the colour fill dimensions
-        int maxRedPanelHeight = (int) ((maxHeightTop - minHeightTop) * featToRealHeight);
+        int maxRedPanelHeight = (int) ((maxHeightTop - minHeightTop) * mFeetToRealHeight);
         this.mDimMaxRedSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, maxRedPanelHeight);
 
-        int maxYellowPanelHeight = (int) ((minHeightTop - maxAerobatics) * featToRealHeight);
+        int maxYellowPanelHeight = (int) ((minHeightTop - maxAerobatics) * mFeetToRealHeight);
         this.mDimMaxYellowSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, maxYellowPanelHeight);
 
-        int middleGreenHeight = (int) ((maxAerobatics - minAerobatics) * featToRealHeight);
+        int middleGreenHeight = (int) ((maxAerobatics - minAerobatics) * mFeetToRealHeight);
         this.mDimMiddleGreenSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, middleGreenHeight);
 
-        int minYellowPanelHeight = (int) ((minAerobatics - maxHeightBottom) * featToRealHeight);
+        int minYellowPanelHeight = (int) ((minAerobatics - maxHeightBottom) * mFeetToRealHeight);
         this.mDimMinYellowSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, minYellowPanelHeight);
 
-        int minRedPanelHeight = (int) ((maxHeightBottom - minHeightBottom) * featToRealHeight);
+        int minRedPanelHeight = (int) ((maxHeightBottom - minHeightBottom) * mFeetToRealHeight);
         this.mDimMinRedSplash = new Dimension(mHeightBar.getWidth() - EDGE_BUFFER, minRedPanelHeight);
 
         recolourHeightBar();
@@ -76,9 +74,8 @@ public class HeightBarMockup {
 
     private void recolourHeightBar() {
         Graphics2D g = (Graphics2D) mHeightBar.getGraphics();
-        Graphics2D gg = (Graphics2D) mPanelOverlay.getGraphics();
 
-        int verticalPosn = mHeightLabel.getHeight() + 1;
+        int verticalPosn = 1;
 
         ColorUIResource maxAirfieldHeightColour = ColourPallete.maxAirfieldHeight;
         maxRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
@@ -109,8 +106,20 @@ public class HeightBarMockup {
 
         g.setColor(minRedColour);
         g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMinRedSplash.width - EDGE_BUFFER, this.mDimMinRedSplash.height);
+        g.dispose();
+        
+        // setAircraftHeight(100);
+    }
+    
+    public void setAircraftHeight(final int feet){
+        if(mIndicator != null){
+            recolourHeightBar();
 
-        gg.drawImage(mIndicator, 10, 150, null);
+            int indicatorPosition = mPanelOverlay.getHeight() - (int) ((feet+500) * mFeetToRealHeight);
+            Graphics2D gg = (Graphics2D) mPanelOverlay.getGraphics();
+            gg.drawImage(mIndicator, 5, indicatorPosition - (mIndicator.getHeight() / 2), null);
+            gg.dispose();
+        }
     }
 
 
@@ -118,10 +127,4 @@ public class HeightBarMockup {
         return mHeightBar;
     }
 
-    private void createUIComponents() {
-//        mPanelOverlay.setLayout(null);
-//        mLabelIndicator = new JLabel();
-//        mLabelIndicator.setIcon(new ImageIcon(getClass().getResource("/images/icons/heightbar.png")));
-//        mPanelOverlay.add(mLabelIndicator);
-    }
 }

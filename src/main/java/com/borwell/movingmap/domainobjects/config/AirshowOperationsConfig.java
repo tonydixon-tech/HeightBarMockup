@@ -10,7 +10,6 @@ public class AirshowOperationsConfig {
 
     private Double mAirfieldMinAerobaticsHeight = 1500.0;
 
-
     private Double mAirfieldMinHeight = 500.0;
 
     public Double getAirfieldHeight() {
