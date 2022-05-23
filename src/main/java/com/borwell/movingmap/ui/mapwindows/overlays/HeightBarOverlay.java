@@ -7,18 +7,14 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class HeightBarOverlay {
+public class HeightBarOverlay extends JFrame {
 
     private static final int EDGE_BUFFER = 1;
     private static final int MAX_HEIGHT = 1000;
-    private Color maxRedColour;
-    private Color maxYellowColour;
-    private Color middleGreenColour;
-    private Color minYellowColour;
-    private Color minRedColour;
 
     private Dimension mDimMaxRedSplash;
     private Dimension mDimMaxYellowSplash;
@@ -31,6 +27,11 @@ public class HeightBarOverlay {
     private double mFeetToRealHeight = 0.0;
 
     public HeightBarOverlay() {
+        //add(mHeightBar);
+        mHeightBar = new JPanel();
+        mHeightBar.setLayout(new BorderLayout());
+        mPanelOverlay = new JPanel();
+        mHeightBar.add(mPanelOverlay, BorderLayout.CENTER);
         try {
             mIndicator = ImageIO.read(this.getClass().getResource("/images/icons/heightbar.png"));
         } catch (IOException ex) {
@@ -78,15 +79,15 @@ public class HeightBarOverlay {
         int verticalPosn = 1;
 
         ColorUIResource maxAirfieldHeightColour = ColourPallete.maxAirfieldHeight;
-        maxRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
-        minRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
+        Color maxRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
+        Color minRedColour = new Color(maxAirfieldHeightColour.getRed(), maxAirfieldHeightColour.getGreen(), maxAirfieldHeightColour.getBlue());
 
         ColorUIResource maxAerobaticsAirfieldHeightColour = ColourPallete.maxAerobaticsAirfieldHeight;
-        maxYellowColour = new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
-        minYellowColour = new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
+        Color maxYellowColour = new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
+        Color minYellowColour = new Color(maxAerobaticsAirfieldHeightColour.getRed(), maxAerobaticsAirfieldHeightColour.getGreen(), maxAerobaticsAirfieldHeightColour.getBlue());
 
         ColorUIResource minAerobaticsAirfieldHeightColour = ColourPallete.minAerobaticsAirfieldHeight;
-        middleGreenColour = new Color(minAerobaticsAirfieldHeightColour.getRed(), minAerobaticsAirfieldHeightColour.getGreen(), minAerobaticsAirfieldHeightColour.getBlue());
+        Color middleGreenColour = new Color(minAerobaticsAirfieldHeightColour.getRed(), minAerobaticsAirfieldHeightColour.getGreen(), minAerobaticsAirfieldHeightColour.getBlue());
 
         g.setColor(maxRedColour);
         g.fillRect(EDGE_BUFFER, verticalPosn, this.mDimMaxRedSplash.width - EDGE_BUFFER, this.mDimMaxRedSplash.height);
@@ -117,7 +118,7 @@ public class HeightBarOverlay {
 
             int indicatorPosition = mPanelOverlay.getHeight() - (int) ((feet+500) * mFeetToRealHeight);
             Graphics2D gg = (Graphics2D) mPanelOverlay.getGraphics();
-            gg.drawImage(mIndicator, 5, indicatorPosition - (mIndicator.getHeight() / 2), null);
+            gg.drawImage(mIndicator, 5, indicatorPosition - (mIndicator.getHeight()), null);
             gg.dispose();
         }
     }
@@ -127,4 +128,11 @@ public class HeightBarOverlay {
         return mHeightBar;
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+        mHeightBar = new JPanel();
+        mHeightBar.setLayout(new BorderLayout());
+        mPanelOverlay = new JPanel();
+        mHeightBar.add(mPanelOverlay, BorderLayout.CENTER);
+    }
 }

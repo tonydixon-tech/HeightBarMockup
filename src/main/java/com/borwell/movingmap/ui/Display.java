@@ -44,7 +44,7 @@ public class Display extends JFrame implements Runnable{
     @Override
     public void run() {
         try {
-            for (int ft = 500; ft < 8000; ft++){
+            for (int ft = 0; ft < 8000; ft++){
                 int feet = ft;
                 Thread.sleep(5);
                 mHeightBar.setAircraftHeight(feet);
